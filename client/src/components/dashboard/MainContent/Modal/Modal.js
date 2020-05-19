@@ -20,6 +20,10 @@ class Modal extends Component {
   state = {
     projectName: "",
     members: [{ name: "", email: "" }],
+    startDate: "",
+    endDate: "",
+    fee: "",
+    hoursPerDay: "",
     taskName: "",
     assignee: "",
     monthDue: "",
@@ -31,7 +35,10 @@ class Modal extends Component {
     if (nextProps.edit) {
       this.setState({
         projectName: nextProps.name,
-        members: nextProps.members
+        members: nextProps.members,
+        fee: nextProps.fee,
+        startDate: nextProps.startDate,
+        endDate: nextProps.endDate
       });
     } else if (nextProps.editTask) {
       this.setState({
@@ -47,6 +54,7 @@ class Modal extends Component {
       this.setState({ members });
     } else {
       this.setState({ [e.target.id]: e.target.value });
+      console.log('date', e.target.id, e.target.value)
     }
   };
 
@@ -65,7 +73,11 @@ class Modal extends Component {
   createProject = () => {
     let project = {
       projectName: this.state.projectName,
-      members: this.state.members
+      members: this.state.members,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      hoursPerDay: this.state.hoursPerDay,
+      fee: this.state.fee
     };
 
     this.props.createProject(project);
@@ -76,7 +88,10 @@ class Modal extends Component {
     let project = {
       id: this.props.id,
       projectName: this.state.projectName,
-      members: this.state.members
+      members: this.state.members,
+      fee: this.state.fee,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate
     };
 
     await this.props.updateProject(project);
@@ -288,7 +303,7 @@ class Modal extends Component {
           </div>
           <div className="form-group">
             <div className="split">
-              <label>
+              {/* <label>
                 <div className="form-label">Assignee</div>
                 <select
                   onChange={this.onSelectChange}
@@ -303,9 +318,9 @@ class Modal extends Component {
                   <option value={email}>{name + " (You)"}</option>
                   {membersOptions}
                 </select>
-              </label>
+              </label> */}
               <label>
-                <div className="form-label">Due Date</div>
+                <div className="form-label">Payment Date</div>
                 <div className="split">
                   <select
                     required={this.state.dayDue ? true : false}
@@ -508,19 +523,55 @@ class Modal extends Component {
           <span className="close-modal" onClick={this.onClose}>
             &times;
           </span>
-          <h1 className="header">Edit Project Info</h1>
+          <h1 className="header">Edit Class Info</h1>
           <p className="created-by">
             Created by {this.props.owner.name} ({this.props.owner.email})
           </p>
           <div className="form-group">
             <label>
-              <div className="form-label">Project Name (required)</div>
+              <div className="form-label">Class Name (required)</div>
               <input
                 onChange={this.onChange}
                 value={this.state.projectName}
                 id="projectName"
                 type="text"
-                placeholder={"My Awesome Project"}
+                placeholder={"Class Name"}
+                className="form-input"
+              />
+            </label>
+          </div>
+          <div className="split">
+            <label>
+              <div className="form-date">Start Date</div>
+              <input
+                onChange={this.onChange}
+                value={moment(this.state.startDate).format('YYYY-MM-DD')}
+                id="startDate"
+                type="date"
+                className="form-input"
+              />
+            </label>
+            <label style={{display: "inline-block"}} className="split-email"> 
+              <div className="form-date">End Date</div>
+              <input
+                onChange={this.onChange}
+                value={moment(this.state.endDate).format('YYYY-MM-DD')}
+                id="endDate"
+                type="date"
+                className="form-input"
+              />
+            </label>
+          </div>
+          <div className="form-group" style={{marginTop: '1rem'}}>
+            <label>
+              <div className="form-label">Class fee</div>
+              <span>Rs. </span>
+              <input
+                onChange={this.onChange}
+                value={this.state.fee}
+                id="fee"
+                type="text"
+                placeholder="400"
                 className="form-input"
               />
             </label>
@@ -569,7 +620,7 @@ class Modal extends Component {
               );
             })}
           </div>
-          <div>
+          <div className="split">
             <button
               className="main-btn update-project"
               onClick={this.updateProject.bind(this, this.props.id)}
@@ -578,7 +629,7 @@ class Modal extends Component {
             </button>
             {this.props.owner.id === this.props.auth.user.id ? (
               <button
-                className="main-btn delete-project"
+                className="main-btn delete-project split-email"
                 onClick={this.deleteProject.bind(this, this.props.id)}
               >
                 Delete Project
@@ -596,16 +647,54 @@ class Modal extends Component {
           <span className="close-modal" onClick={this.onClose}>
             &times;
           </span>
-          <h1 className="header">Create a project</h1>
+          <h1 className="header">Create a class</h1>
           <div className="form-group">
             <label>
-              <div className="form-label">Project Name (required)</div>
+              <div className="form-label">Class Name (required)</div>
               <input
                 onChange={this.onChange}
                 value={this.state.projectName}
                 id="projectName"
                 type="text"
-                placeholder="My Awesome Project"
+                placeholder="Mathematics class - May"
+                className="form-input"
+              />
+            </label>
+          </div>
+          <div className="split">
+            <label>
+              <div className="form-date">Start Date</div>
+              <input
+                onChange={this.onChange}
+                value={this.state.startDate}
+                id="startDate"
+                type="date"
+                placeholder={Date.now.toString()}
+                className="form-input"
+              />
+            </label>
+            <label style={{display: "inline-block"}} className="split-email"> 
+              <div className="form-date">End Date</div>
+              <input
+                onChange={this.onChange}
+                value={this.state.endDate}
+                id="endDate"
+                type="date"
+                placeholder={Date.now.toString()}
+                className="form-input"
+              />
+            </label>
+          </div>
+          <div className="form-group" style={{marginTop: '1rem'}}>
+            <label>
+              <div className="form-label">Class fee</div>
+              <span>Rs. </span>
+              <input
+                onChange={this.onChange}
+                value={this.state.fee}
+                id="fee"
+                type="text"
+                placeholder="400"
                 className="form-input"
               />
             </label>

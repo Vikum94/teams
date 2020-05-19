@@ -19,12 +19,18 @@ class Project extends Component {
     members: [],
     id: "",
     owner: {},
+    startDate: "",
+    endDate: "",
+    hoursPerDay: "",
+    fee: "",
+    classState: "",
     tasks: [],
     date: "",
     taskName: "",
     assignee: "",
     taskId: "",
-    dateDue: ""
+    dateDue: "",
+    auth: {}
   };
 
   toggleModal = e => {
@@ -36,14 +42,18 @@ class Project extends Component {
     });
   };
 
-  toggleEditModal = (name, members, id, owner, e) => {
+  toggleEditModal = (name, members, id, owner, hoursPerDay, startDate, endDate, fee, e) => {
     this.setState({
       modal: !this.state.modal,
       edit: !this.state.edit,
       name: name,
       members: members,
       id: id,
-      owner: owner
+      owner: owner,
+      startDate: startDate,
+      endDate: endDate,
+      hoursPerDay: hoursPerDay,
+      fee: fee
     });
   };
 
@@ -93,7 +103,6 @@ class Project extends Component {
 
   render() {
     const { tasks } = this.props.tasks;
-
     let tasksList = tasks.map((task, index) => (
       <div className="task-input" key={task._id}>
         <i
@@ -164,9 +173,14 @@ class Project extends Component {
               project.name,
               project.teamMembers,
               project._id,
-              project.owner
+              project.owner,
+              project.hoursPerDay,
+              project.startDate,
+              project.endDate,
+              project.fee
             )}
             className="main-btn center-btn"
+            style = {{visibility:(this.props.auth.user.userType === "admin") ? "visible": "hidden"}}
           >
             Edit Project Info
           </button>
@@ -180,6 +194,9 @@ class Project extends Component {
               editTask={this.state.editTask}
               name={this.state.name}
               members={this.state.members}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              fee={this.state.fee}
               id={this.state.id}
               owner={this.state.owner}
               taskName={this.state.taskName}

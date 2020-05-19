@@ -13,6 +13,7 @@
   height: 550px;
   z-index: 1000;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+  overflow: scroll;
 }
 
 @keyframes fade-in {
@@ -41,6 +42,15 @@
 }
 
 .form-label {
+  width: 100%;
+  padding-right: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: 14px;
+  color: $darkGray;
+  font-family: $code;
+}
+
+.form-date {
   width: 100%;
   padding-right: 2rem;
   margin-bottom: 0.75rem;
@@ -125,12 +135,12 @@
 .create-project,
 .update-project,
 .delete-project {
-  position: fixed;
+  // position: fixed;
   bottom: 1.25rem;
 }
 
 .delete-project {
-  margin-left: 335px;
+  // margin-left: 335px;
   background-color: $red;
   border: 1px solid $red;
 

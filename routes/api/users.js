@@ -81,7 +81,8 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
-          email: user.email
+          email: user.email,
+          userType: user.userType
         };
 
         // Sign token
@@ -94,6 +95,7 @@ router.post("/login", (req, res) => {
           (err, token) => {
             res.json({
               success: true,
+              userType: user.userType,
               token: "Bearer " + token
             });
           }

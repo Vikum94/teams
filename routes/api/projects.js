@@ -11,33 +11,35 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    let projectsArr = [];
+    // let projectsArr = [];
 
     // Member projects
-    await Project.find({})
-      .then(projects => {
-        projects.map(project => {
-          project.teamMembers &&
-            project.teamMembers.map(member => {
-              if (member.email == req.user.email) {
-                projectsArr.push(project);
-              }
-            });
-        });
-      })
-      .catch(err => console.log(err));
+    // await Project.find({})
+    //   .then(projects => {
+    //     projects.map(project => {
+    //       project.teamMembers &&
+    //         project.teamMembers.map(member => {
+    //           if (member.email == req.user.email) {
+    //             projectsArr.push(project);
+    //           } else {
+    //             projectsArr.push(project);
+    //           }
+    //         });
+    //     });
+    //   })
+    //   .catch(err => console.log(err));
 
-    const OWNER = {
-      id: req.user.id,
-      name: req.user.name,
-      email: req.user.email
-    };
+    // const OWNER = {
+    //   id: req.user.id,
+    //   name: req.user.name,
+    //   email: req.user.email
+    // };
 
     // Combine with owner projects
-    await Project.find({ owner: OWNER })
+    await Project.find({})
       .then(projects => {
-        let finalArr = [...projects, ...projectsArr];
-        res.json(finalArr);
+        // let finalArr = [...projects, ...projectsArr];
+        res.json(projects);
       })
       .catch(err => console.log(err));
   }
@@ -72,7 +74,10 @@ router.post(
     const NEW_PROJECT = await new Project({
       owner: OWNER,
       name: req.body.projectName,
-      teamMembers: req.body.members
+      teamMembers: req.body.members,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      fee: req.body.fee
     });
 
     NEW_PROJECT.save().then(project => res.json(project));
@@ -90,7 +95,10 @@ router.patch(
 
     projectFields.name = req.body.projectName;
     projectFields.teamMembers = req.body.members;
-
+    projectFields.startDate = req.body.startDate;
+    projectFields.endDate = req.body.endDate;
+    projectFields.fee = req.body.fee;
+    console.log('Fee ', req.body.fee);
     Project.findOneAndUpdate(
       { _id: req.body.id },
       { $set: projectFields },

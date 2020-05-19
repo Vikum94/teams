@@ -20,7 +20,7 @@ class Dashboard extends Component {
     this.setState({ modal: !this.state.modal, edit: false });
   };
 
-  toggleEditModal = (name, members, id, owner, e) => {
+  toggleEditModal = (name, members, id, owner, fee, startDate, endDate, e) => {
     e.stopPropagation();
 
     this.setState({
@@ -29,7 +29,10 @@ class Dashboard extends Component {
       name: name,
       members: members,
       id: id,
-      owner: owner
+      owner: owner,
+      fee: fee,
+      startDate: startDate,
+      endDate: endDate
     });
   };
 
@@ -52,12 +55,16 @@ class Dashboard extends Component {
             project.name,
             project.teamMembers,
             project._id,
-            project.owner
+            project.owner,
+            project.fee,
+            project.startDate,
+            project.endDate
           )}
+          style={{ visibility: (this.props.auth.user.userType === "admin") ? "visible" : "hidden" }}
         >
           Edit project
         </div>
-        <div className="project-info-button">Go to project</div>
+        <div className="project-info-button">Go to class</div>
       </div>
     ));
 
@@ -65,8 +72,11 @@ class Dashboard extends Component {
       // At least one project
       content = (
         <>
-          <button className="main-btn" onClick={this.toggleModal}>
-            Create another project
+          <button
+            className="main-btn" onClick={this.toggleModal}
+            style = {{visibility:(this.props.auth.user.userType === "admin") ? "visible": "hidden"}}
+          >
+            Create another class
           </button>
           <div className="modal-wrapper">
             <Modal
@@ -77,6 +87,9 @@ class Dashboard extends Component {
               members={this.state.members}
               id={this.state.id}
               owner={this.state.owner}
+              fee={this.state.fee}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
             />
           </div>
           <div className="projects-wrapper">{projectData}</div>
@@ -88,9 +101,9 @@ class Dashboard extends Component {
         <>
           <div className="projects">
             <div className="no-projects">
-              <h1 className="header">You have no projects</h1>
+              <h1 className="header">You have no classes</h1>
               <button className="main-btn" onClick={this.toggleModal}>
-                Create your first project
+                Create your first class
               </button>
               <div className="modal-wrapper">
                 <Modal onClose={this.toggleModal} modal={this.state.modal} />
@@ -103,7 +116,7 @@ class Dashboard extends Component {
 
     return (
       <div className="main-content">
-        <h1 className="header">Your Projects</h1>
+        <h1 className="header">Classes</h1>
         {content}
       </div>
     );
@@ -111,6 +124,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   projects: state.projects
 });
 
