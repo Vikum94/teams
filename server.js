@@ -20,7 +20,7 @@ app.use(
 app.use(bodyParser.json());
 
 // DB Config
-const db = require("./config/keys").mongoURI;
+const db =(process.env.NODE_ENV === "production") ? process.env.DATABASE_URL :  require("./config/keys").mongoURI;
 
 // Connect to MongoDB
 mongoose
