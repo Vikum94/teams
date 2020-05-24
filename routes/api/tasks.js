@@ -27,7 +27,7 @@ router.post(
     const NEW_TASK = new Task({
       project: req.body.project,
       taskName: req.body.taskName,
-      dateDue: req.body.dateDue,
+      paymentDate: req.body.paymentDate,
       assignee: req.body.assignee
     });
 
@@ -60,9 +60,10 @@ router.patch(
     let taskFields = {};
 
     taskFields.taskName = req.body.taskName;
-    if (req.body.dateDue && req.body.dateDue !== "Date undefined") {
-      taskFields.dateDue = req.body.dateDue;
-    }
+    // if (req.body.paymentDate && req.body.paymentDate !== "Date undefined") {
+    //   taskFields.paymentDate = req.body.paymentDate;
+    // }
+    taskFields.paymentDate = req.body.paymentDate;
     taskFields.assignee = req.body.assignee;
 
     Task.findOneAndUpdate(

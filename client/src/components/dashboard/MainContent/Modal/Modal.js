@@ -26,8 +26,8 @@ class Modal extends Component {
     hoursPerDay: "",
     taskName: "",
     assignee: "",
-    monthDue: "",
-    dayDue: "",
+    paymentDate: "",
+    // dayDue: "",
     taskId: ""
   };
 
@@ -42,7 +42,9 @@ class Modal extends Component {
       });
     } else if (nextProps.editTask) {
       this.setState({
-        taskName: nextProps.taskName
+        taskName: nextProps.taskName,
+        paymentDate: nextProps.paymentDate,
+        assignee: nextProps.assignee
       });
     }
   }
@@ -116,8 +118,8 @@ class Modal extends Component {
       projectName: "",
       taskName: "",
       assignee: "",
-      monthDue: "",
-      dayDue: "",
+      paymentDate: "",
+      // dayDue: "",
       members: [{ name: "", email: "" }]
     });
   };
@@ -129,24 +131,24 @@ class Modal extends Component {
   createTask = e => {
     e.preventDefault();
 
-    let fullDate =
-      this.state.monthDue +
-      "-" +
-      this.state.dayDue +
-      "-" +
-      Date().split(" ")[3];
+    // let fullDate =
+    //   this.state.monthDue +
+    //   "-" +
+    //   this.state.dayDue +
+    //   "-" +
+    //   Date().split(" ")[3];
 
-    let momentDate = moment(fullDate, "MM-DD-YYYY")
-      ._d.toString()
-      .split(" ");
+    // let momentDate = moment(fullDate, "MM-DD-YYYY")
+    //   ._d.toString()
+    //   .split(" ");
 
-    let finalDate = momentDate[1] + " " + momentDate[2];
+    // let finalDate = momentDate[1] + " " + momentDate[2];
 
     const data = {
       project: this.props.projects.project._id,
       taskName: this.state.taskName,
       assignee: this.state.assignee,
-      dateDue: finalDate
+      paymentDate: this.state.paymentDate
     };
 
     this.props.createTask(data);
@@ -155,81 +157,15 @@ class Modal extends Component {
   };
 
   updateTask = id => {
-    let finalDate;
-
-    let dates = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"
-    ];
-
-    if (!this.state.monthDue && !this.state.dayDue) {
-      finalDate = this.props.dateDue;
-    } else if (
-      this.props.dateDue &&
-      this.props.dateDue !== "Date undefined" &&
-      !this.state.monthDue &&
-      this.state.dayDue
-    ) {
-      let fullDate =
-        dates.indexOf(this.props.dateDue.split(" ")[0]) +
-        1 +
-        "-" +
-        this.state.dayDue +
-        "-" +
-        Date().split(" ")[3];
-
-      let momentDate = moment(fullDate, "MM-DD-YYYY")
-        ._d.toString()
-        .split(" ");
-
-      finalDate = momentDate[1] + " " + momentDate[2];
-    } else if (
-      this.props.dateDue &&
-      this.props.dateDue !== "Date undefined" &&
-      !this.state.dayDue &&
-      this.state.monthDue
-    ) {
-      let fullDate =
-        this.state.monthDue +
-        "-" +
-        this.props.dateDue.split(" ")[1] +
-        "-" +
-        Date().split(" ")[3];
-
-      let momentDate = moment(fullDate, "MM-DD-YYYY")
-        ._d.toString()
-        .split(" ");
-
-      finalDate = momentDate[1] + " " + momentDate[2];
-    } else {
-      let fullDate =
-        this.state.monthDue +
-        "-" +
-        this.state.dayDue +
-        "-" +
-        Date().split(" ")[3];
-
-      let momentDate = moment(fullDate, "MM-DD-YYYY")
-        ._d.toString()
-        .split(" ");
-
-      finalDate = momentDate[1] + " " + momentDate[2];
-    }
-
+    // let finalDate = '';
+    // if /*(!this.state.paym && !this.state.dayDue)*/ (!this.state.paymentDate) {
+    //   finalDate = this.props.paymentDate;
+    // } else finalDate = this.state.paymentDate
     let task = {
       id: id,
       taskName: this.state.taskName,
-      dateDue: finalDate,
+      // dateDue: finalDate,
+      paymentDate: this.state.paymentDate,
       assignee: this.state.assignee || this.props.assignee
     };
 
@@ -257,29 +193,29 @@ class Modal extends Component {
       const { name, email } = this.props.auth.user;
 
       // Assignee dropdown in Modal
-      let membersOptions = teamMembers.map((member, index) => (
-        <option key={index} value={member.email}>
-          {member.name}
-        </option>
-      ));
+      // let membersOptions = teamMembers.map((member, index) => (
+      //   <option key={index} value={member.email}>
+      //     {member.name}
+      //   </option>
+      // ));
 
       // Due date dropdown in Modal
-      const MONTHS = new Array(12).fill(1);
-      const DAYS = new Array(31).fill(1);
+      // const MONTHS = new Array(12).fill(1);
+      // const DAYS = new Array(31).fill(1);
 
-      let monthsOptions = MONTHS.map((month, i) => (
-        <option key={i} value={i + 1}>
-          {i < 9 && "0"}
-          {i + 1}
-        </option>
-      ));
+      // let monthsOptions = MONTHS.map((month, i) => (
+      //   <option key={i} value={i + 1}>
+      //     {i < 9 && "0"}
+      //     {i + 1}
+      //   </option>
+      // ));
 
-      let daysOptions = DAYS.map((day, i) => (
-        <option key={i} value={i + 1}>
-          {i < 9 && "0"}
-          {i + 1}
-        </option>
-      ));
+      // let daysOptions = DAYS.map((day, i) => (
+      //   <option key={i} value={i + 1}>
+      //     {i < 9 && "0"}
+      //     {i + 1}
+      //   </option>
+      // ));
 
       return (
         <form onSubmit={this.createTask} className="modal">
@@ -289,22 +225,22 @@ class Modal extends Component {
           <h1 className="header">Create task</h1>
           <div className="form-group">
             <label>
-              <div className="form-label">Task Name (required)</div>
+              <div className="form-label">Payment Reference</div>
               <input
                 required
                 onChange={this.onChange}
                 value={this.state.taskName}
                 id="taskName"
                 type="text"
-                placeholder={"What is the task?"}
+                placeholder={this.props.auth.user.userID + 'JAN'}
                 className="form-input"
               />
             </label>
           </div>
           <div className="form-group">
             <div className="split">
-              {/* <label>
-                <div className="form-label">Assignee</div>
+              <label>
+                <div className="form-label">Payee</div>
                 <select
                   onChange={this.onSelectChange}
                   value={this.state.assignee}
@@ -313,15 +249,27 @@ class Modal extends Component {
                   className="form-input task-input-split"
                 >
                   <option disabled value="">
-                    Assign to
+                    Assigned to
                   </option>
-                  <option value={email}>{name + " (You)"}</option>
-                  {membersOptions}
+                  <option value={email} selected>{name + ""}</option>
+                  {/* {membersOptions} */}
                 </select>
-              </label> */}
+              </label>
               <label>
-                <div className="form-label">Payment Date</div>
+                {/* <div className="form-label">Payment Date</div> */}
                 <div className="split">
+                  <label>
+                    <div className="form-date">Payment Date</div>
+                    <input
+                      onChange={this.onChange}
+                      value={moment(this.state.paymentDate).format('YYYY-MM-DD')}
+                      id="paymentDate"
+                      type="date"
+                      className="form-input"
+                    />
+                  </label>
+                  {/*<
+                  
                   <select
                     required={this.state.dayDue ? true : false}
                     onChange={this.onSelectChange}
@@ -348,6 +296,7 @@ class Modal extends Component {
                     </option>
                     {daysOptions}
                   </select>
+                  */}
                 </div>
               </label>
             </div>
@@ -366,18 +315,18 @@ class Modal extends Component {
       const { teamMembers } = this.props.projects.project;
       const { name, email } = this.props.auth.user;
 
-      const { assignee, dateDue, taskId } = this.props;
+      const { assignee, paymentDate, taskId } = this.props;
       let assigneeName;
 
-      let assignedMonth = moment(dateDue).month() + 1;
-      let assignedDay = dateDue.split(" ")[1];
+      // let assignedMonth = moment(dateDue).month() + 1;
+      // let assignedDay = dateDue.split(" ")[1];
 
       // Find name from email
       teamMembers.forEach(member => {
         if (member.email === assignee) {
           assigneeName = member.name;
         } else if (assignee) {
-          assigneeName = name + " (You)";
+          assigneeName = name + "";
         }
       });
 
@@ -394,24 +343,24 @@ class Modal extends Component {
       });
 
       // Due date dropdown in Modal
-      const MONTHS = new Array(12).fill(1);
-      const DAYS = new Array(31).fill(1);
+      // const MONTHS = new Array(12).fill(1);
+      // const DAYS = new Array(31).fill(1);
 
-      let monthsOptions = MONTHS.map((month, i) => {
-        return (
-          <option key={i} value={i + 1}>
-            {i < 9 && "0"}
-            {i + 1}
-          </option>
-        );
-      });
+      // let monthsOptions = MONTHS.map((month, i) => {
+      //   return (
+      //     <option key={i} value={i + 1}>
+      //       {i < 9 && "0"}
+      //       {i + 1}
+      //     </option>
+      //   );
+      // });
 
-      let daysOptions = DAYS.map((day, i) => (
-        <option key={i} value={i + 1}>
-          {i < 9 && "0"}
-          {i + 1}
-        </option>
-      ));
+      // let daysOptions = DAYS.map((day, i) => (
+      //   <option key={i} value={i + 1}>
+      //     {i < 9 && "0"}
+      //     {i + 1}
+      //   </option>
+      // ));
 
       return (
         <form className="modal">
@@ -436,7 +385,7 @@ class Modal extends Component {
           <div className="form-group">
             <div className="split">
               <label>
-                <div className="form-label">Assignee</div>
+                <div className="form-label">Payee</div>
                 <select
                   onChange={this.onSelectChange}
                   value={this.state.assignee}
@@ -450,16 +399,25 @@ class Modal extends Component {
                     </option>
                   )}
                   {assignee && <option value={assignee}>{assigneeName}</option>}
-                  {assigneeName !== name + " (You)" && (
-                    <option value={email}>{name + " (You)"}</option>
+                  {assigneeName !== name + "" && (
+                    <option value={email}>{name + ""}</option>
                   )}
-                  {membersOptions}
+                  {/* {membersOptions} */}
                 </select>
               </label>
               <label>
-                <div className="form-label">Due Date</div>
                 <div className="split">
-                  <select
+                  <label>
+                    <div className="form-date">Payment Date</div>
+                    <input
+                      onChange={this.onChange}
+                      value={moment(this.state.paymentDate).format('YYYY-MM-DD')}
+                      id="paymentDate"
+                      type="date"
+                      className="form-input"
+                    />
+                  </label>
+                  {/*<select
                     required={this.state.dayDue ? true : false}
                     onChange={this.onSelectChange}
                     value={
@@ -492,7 +450,7 @@ class Modal extends Component {
                       </option>
                     )}
                     {daysOptions}
-                  </select>
+                    </select>*/}
                 </div>
               </label>
             </div>
@@ -551,7 +509,7 @@ class Modal extends Component {
                 className="form-input"
               />
             </label>
-            <label style={{display: "inline-block"}} className="split-email"> 
+            <label style={{ display: "inline-block" }} className="split-email">
               <div className="form-date">End Date</div>
               <input
                 onChange={this.onChange}
@@ -562,7 +520,7 @@ class Modal extends Component {
               />
             </label>
           </div>
-          <div className="form-group" style={{marginTop: '1rem'}}>
+          <div className="form-group" style={{ marginTop: '1rem' }}>
             <label>
               <div className="form-label">Class fee</div>
               <span>Rs. </span>
@@ -673,7 +631,7 @@ class Modal extends Component {
                 className="form-input"
               />
             </label>
-            <label style={{display: "inline-block"}} className="split-email"> 
+            <label style={{ display: "inline-block" }} className="split-email">
               <div className="form-date">End Date</div>
               <input
                 onChange={this.onChange}
@@ -685,7 +643,7 @@ class Modal extends Component {
               />
             </label>
           </div>
-          <div className="form-group" style={{marginTop: '1rem'}}>
+          <div className="form-group" style={{ marginTop: '1rem' }}>
             <label>
               <div className="form-label">Class fee</div>
               <span>Rs. </span>

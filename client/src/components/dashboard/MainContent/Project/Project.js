@@ -9,6 +9,8 @@ import Modal from "../Modal/Modal";
 import "../MainContent.scss";
 import "./Project.scss";
 
+import moment from "moment";
+
 class Project extends Component {
   state = {
     modal: false,
@@ -29,7 +31,8 @@ class Project extends Component {
     taskName: "",
     assignee: "",
     taskId: "",
-    dateDue: "",
+    paymentDate: "",
+    // dateDue: "",
     auth: {}
   };
 
@@ -64,14 +67,14 @@ class Project extends Component {
     });
   };
 
-  toggleEditTaskModal = (taskName, assignee, dateDue, id, e) => {
+  toggleEditTaskModal = (taskName, assignee, paymentDate, id, e) => {
     this.setState({
       modal: !this.state.modal,
       editTask: !this.state.editTask,
       taskName: taskName,
       assignee: assignee,
       taskId: id,
-      dateDue: dateDue
+      paymentDate: paymentDate
     });
   };
 
@@ -116,7 +119,7 @@ class Project extends Component {
             this,
             task.taskName,
             task.assignee,
-            task.dateDue,
+            task.paymentDate,
             task._id
           )}
           id={index}
@@ -130,7 +133,7 @@ class Project extends Component {
             this,
             task.taskName,
             task.assignee,
-            task.dateDue,
+            task.paymentDate,
             task._id
           )}
           className={!task.assignee ? "task-info muted" : "task-info"}
@@ -144,14 +147,14 @@ class Project extends Component {
             this,
             task.taskName,
             task.assignee,
-            task.dateDue,
+            task.paymentDate,
             task._id
           )}
           className={
-            task.dateDue === "Date undefined" ? "task-info muted" : "task-info"
+            task.paymentDate === "Date undefined" ? "task-info muted" : "task-info"
           }
         >
-          {task.dateDue === "Date undefined" ? "Not Set" : task.dateDue}
+          {task.paymentDate === "Date undefined" ? "Not Set" : moment(task.paymentDate).format('YYYY-MM-DD')}
         </span>
       </div>
     ));
@@ -201,7 +204,7 @@ class Project extends Component {
               owner={this.state.owner}
               taskName={this.state.taskName}
               assignee={this.state.assignee}
-              dateDue={this.state.dateDue}
+              paymentDate={this.state.paymentDate}
               taskId={this.state.taskId}
             />
           </div>
@@ -214,8 +217,8 @@ class Project extends Component {
                 Add task
               </button>
               <div className="projects-column-headers">
-                <p>Assignee</p>
-                <p>Due</p>
+                <p>Payee</p>
+                <p>Date</p>
               </div>
             </div>
             <div className="project-tasks">{tasksList}</div>

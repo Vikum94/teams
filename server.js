@@ -7,6 +7,7 @@ const path = require("path");
 const users = require("./routes/api/users");
 const projects = require("./routes/api/projects");
 const tasks = require("./routes/api/tasks");
+const counter = require("./routes/api/counter");
 
 const app = express();
 
@@ -40,6 +41,7 @@ require("./config/passport")(passport);
 app.use("/api/users", users);
 app.use("/api/projects", projects);
 app.use("/api/tasks", tasks);
+app.use("/api/counter", counter);
 
 // Serve static assets (build folder) if in production
 if (process.env.NODE_ENV === "production") {

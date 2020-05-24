@@ -70,6 +70,11 @@ class TopNav extends Component {
         </div>
         <ul className="right-top">
           <li>
+            <div className='email'>
+              User ID: {this.props.auth.user.userID}
+            </div>
+          </li>
+          <li>
             <div className="email">
               <p>Signed in as {email}</p>
             </div>

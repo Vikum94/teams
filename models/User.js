@@ -22,6 +22,9 @@ const UserSchema = new Schema({
   userType: {
     type: String,
     default: 'student'
+  },
+  userID: {
+    type: String
   } 
 });
 

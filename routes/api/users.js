@@ -8,9 +8,20 @@ const passport = require("passport");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const getNextNumber = require('../../util/counter');
 
 // Load User model
 const User = require("../../models/User");
+const Counter = require("../../models/Counter");
+
+router.get('/userid',
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+
+    let a = await getNextNumber();
+    res.json({number: a})
+  }
+);
 
 // @route POST api/users/register
 // @desc Register user
@@ -25,14 +36,18 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email }).then(user => {
+  User.findOne({ email: req.body.email }).then(async user => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
+      // create user id
+      let userID = await getNextNumber();
+      userID = 'SEM' + '0'.repeat(4 - (userID + '').length) + userID;
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        userID: userID
       });
 
       // Hash password before saving in database
@@ -82,7 +97,8 @@ router.post("/login", (req, res) => {
           id: user.id,
           name: user.name,
           email: user.email,
-          userType: user.userType
+          userType: user.userType,
+          userID: user.userID
         };
 
         // Sign token
