@@ -105,7 +105,12 @@ class Project extends Component {
   };
 
   render() {
-    const { tasks } = this.props.tasks;
+    // const { propTasks } = this.props.tasks;
+    const tasks = (this.props.auth.user.userType === 'admin') ?
+      this.props.tasks.tasks : this.props.tasks.tasks.filter((task) => {
+        return task.assignee === this.props.auth.user.email
+      });
+
     let tasksList = tasks.map((task, index) => (
       <div className="task-input" key={task._id}>
         <i
@@ -183,7 +188,7 @@ class Project extends Component {
               project.fee
             )}
             className="main-btn center-btn"
-            style = {{visibility:(this.props.auth.user.userType === "admin") ? "visible": "hidden"}}
+            style={{ visibility: (this.props.auth.user.userType === "admin") ? "visible" : "hidden" }}
           >
             Edit Project Info
           </button>
